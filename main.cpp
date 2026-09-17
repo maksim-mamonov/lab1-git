@@ -21,27 +21,44 @@ double jouleHeat(double I, double R, double t) {
 // ===== Главная функция: меню =====
 
 int main() {
-
     int choice;
     double U, I, R, t;
 
     do {
         cout << "\n=== Вариант 38: работа и теплота тока ===\n";
         cout << "1. Работа тока\n";
+        cout << "2. Количество теплоты (закон Джоуля — Ленца)\n";
         cout << "0. Выход\n";
         cout << "Выберите пункт: ";
-        cin >> choice;
+
+        // Проверка корректности ввода пункта меню
+        if (!(cin >> choice)) {
+            cout << "Ошибка ввода! Введите числовое значение.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
 
         switch (choice) {
             case 1:
-                cout << "Введите U, I, t: ";
-                cin >> U >> I >> t;
-                cout << "Работа тока = " << currentWork(U, I, t) << "\n";
+                cout << "Введите U (В), I (А), t (с): ";
+                if (!(cin >> U >> I >> t) || t < 0) {
+                    cout << "Ошибка! Значения должны быть числами, а время t >= 0.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                } else {
+                    cout << "Работа тока = " << currentWork(U, I, t) << " Дж\n";
+                }
                 break;
             case 2:
-                cout << "Введите I, R, t: ";
-                cin >> I >> R >> t;
-                cout << "Количество теплоты = " << jouleHeat(I, R, t) << "\n";
+                cout << "Введите I (А), R (Ом), t (с): ";
+                if (!(cin >> I >> R >> t) || R < 0 || t < 0) {
+                    cout << "Ошибка! Значения должны быть числами, а R и t не могут быть отрицательными.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                } else {
+                    cout << "Количество теплоты = " << jouleHeat(I, R, t) << " Дж\n";
+                }
                 break;
             case 0:
                 cout << "Работа завершена.\n";
@@ -50,5 +67,6 @@ int main() {
                 cout << "Такого пункта нет.\n";
         }
     } while (choice != 0);
+
     return 0;
 }
